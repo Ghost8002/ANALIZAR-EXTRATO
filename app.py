@@ -41,43 +41,12 @@ if uploaded_files:
         total_servicos += sum(valores_servicos)
     total_geral = total_locacao + total_servicos
 
-    st.markdown("""
-    <style>
-    .card {
-        background-color: #f0f2f6;
-        border-radius: 12px;
-        padding: 24px 16px;
-        margin-bottom: 16px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.07);
-        text-align: center;
-    }
-    .valor {
-        font-size: 2.2em;
-        font-weight: bold;
-        color: #2563eb;
-    }
-    .valor-servico {
-        color: #059669;
-    }
-    .valor-total {
-        color: #d97706;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
-    st.markdown(f'''
-    <div class="card">
-        <div>Locação de bens móveis</div>
-        <div class="valor">R$ {total_locacao:,.2f}</div>
+    st.markdown(f"""
+    <div style='text-align:center; margin-top:40px;'>
+        <div style='font-size:2em; margin-bottom:16px;'>Locação de bens móveis: <b>R$ {total_locacao:,.2f}</b></div>
+        <div style='font-size:2em; margin-bottom:16px;'>Prestação de Serviços: <b>R$ {total_servicos:,.2f}</b></div>
+        <div style='font-size:2.3em; margin-top:32px;'><b>Total Geral: R$ {total_geral:,.2f}</b></div>
     </div>
-    <div class="card">
-        <div>Prestação de Serviços</div>
-        <div class="valor valor-servico">R$ {total_servicos:,.2f}</div>
-    </div>
-    <div class="card">
-        <div><b>Total Geral</b></div>
-        <div class="valor valor-total">R$ {total_geral:,.2f}</div>
-    </div>
-    '''.replace(',', 'X').replace('.', ',').replace('X', '.'), unsafe_allow_html=True)
+    """.replace(',', 'X').replace('.', ',').replace('X', '.'), unsafe_allow_html=True)
 else:
     st.info('Faça upload de um ou mais arquivos PDF para começar.')
