@@ -41,10 +41,14 @@ if uploaded_files:
         total_servicos += sum(valores_servicos)
     total_geral = total_locacao + total_servicos
 
+    def format_brl(valor):
+        return f'R$ {valor:,.2f}'.replace(',', 'X').replace('.', ',').replace('X', '.')
+
     df_totais = pd.DataFrame({
         'Categoria': ['Locação de bens móveis', 'Prestação de Serviços', 'Total Geral'],
         'Valor': [total_locacao, total_servicos, total_geral]
     })
-    st.dataframe(df_totais.style.format({'Valor': 'R$ {:,.2f}'}), use_container_width=True)
+    df_totais['Valor'] = df_totais['Valor'].apply(format_brl)
+    st.dataframe(df_totais, use_container_width=True)
 else:
     st.info('Faça upload de um ou mais arquivos PDF para começar.')
