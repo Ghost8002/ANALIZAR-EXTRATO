@@ -41,12 +41,10 @@ if uploaded_files:
         total_servicos += sum(valores_servicos)
     total_geral = total_locacao + total_servicos
 
-    st.markdown(f"""
-    <div style='text-align:center; margin-top:40px;'>
-        <div>Locação de bens móveis: <b>R$ {total_locacao:,.2f}</b></div>
-        <div>Prestação de Serviços: <b>R$ {total_servicos:,.2f}</b></div>
-        <div style='margin-top:16px;'><b>Total Geral: R$ {total_geral:,.2f}</b></div>
-    </div>
-    """.replace(',', 'X').replace('.', ',').replace('X', '.'), unsafe_allow_html=True)
+    df_totais = pd.DataFrame({
+        'Categoria': ['Locação de bens móveis', 'Prestação de Serviços', 'Total Geral'],
+        'Valor': [total_locacao, total_servicos, total_geral]
+    })
+    st.dataframe(df_totais.style.format({'Valor': 'R$ {:,.2f}'}), use_container_width=True)
 else:
     st.info('Faça upload de um ou mais arquivos PDF para começar.')
