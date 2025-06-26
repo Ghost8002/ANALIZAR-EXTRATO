@@ -9,34 +9,28 @@ st.title('Analisador de Extrato - Receita Bruta por Categoria')
 
 uploaded_files = st.file_uploader('Selecione os arquivos PDF', type='pdf', accept_multiple_files=True)
 
-# Padrões para identificar as seções
-pattern_locacao = r'Locação de bens móveis[\w\W]+?Receita Bruta Informada: R\$ ([\d\.,]+)'
-pattern_servicos = r'Prestação de Serviços, exceto para o exterior - Não sujeitos ao fator "r" e tributados pelo Anexo III, com retenção/substituição tributária de ISS[\w\W]+?Receita Bruta Informada: R\$ ([\d\.,]+)'
+# Regex para encontrar todos os blocos que contenham Receita Bruta Informada
+pattern_bloco = r'((Locação de bens móveis|Prestação de Serviços[\w\W]{0,200}?)?[\w\W]{0,300}?Receita Bruta Informada: R\$ ([\d\.,]+))'
 
-# Função para extrair valores por categoria
-
+# Função para extrair valores por categoria de forma flexível
 def extrair_receitas_por_categoria(pdf_file):
     reader = PdfReader(pdf_file)
     texto = ''
     for page in reader.pages:
         texto += page.extract_text() + '\n'
-    # Extrai valores de cada categoria
-    locacao = re.findall(pattern_locacao, texto)
-    servicos = re.findall(pattern_servicos, texto)
+    matches = re.findall(pattern_bloco, texto, re.IGNORECASE)
     valores_locacao = []
     valores_servicos = []
-    for valor in locacao:
+    for bloco, categoria, valor in matches:
         valor_num = valor.replace('.', '').replace(',', '.')
         try:
-            valores_locacao.append(float(valor_num))
+            valor_float = float(valor_num)
         except ValueError:
-            pass
-    for valor in servicos:
-        valor_num = valor.replace('.', '').replace(',', '.')
-        try:
-            valores_servicos.append(float(valor_num))
-        except ValueError:
-            pass
+            continue
+        if 'locação de bens móveis' in bloco.lower():
+            valores_locacao.append(valor_float)
+        elif 'prestação de serviços' in bloco.lower():
+            valores_servicos.append(valor_float)
     return valores_locacao, valores_servicos
 
 if uploaded_files:
