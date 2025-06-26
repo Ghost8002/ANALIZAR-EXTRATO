@@ -43,9 +43,9 @@ if uploaded_files:
 
     st.markdown(f"""
     <div style='text-align:center; margin-top:40px;'>
-        <div style='font-size:2em; margin-bottom:16px;'>Locação de bens móveis: <b>R$ {total_locacao:,.2f}</b></div>
-        <div style='font-size:2em; margin-bottom:16px;'>Prestação de Serviços: <b>R$ {total_servicos:,.2f}</b></div>
-        <div style='font-size:2.3em; margin-top:32px;'><b>Total Geral: R$ {total_geral:,.2f}</b></div>
+        <div>Locação de bens móveis: <b>R$ {total_locacao:,.2f}</b></div>
+        <div>Prestação de Serviços: <b>R$ {total_servicos:,.2f}</b></div>
+        <div style='margin-top:16px;'><b>Total Geral: R$ {total_geral:,.2f}</b></div>
     </div>
     """.replace(',', 'X').replace('.', ',').replace('X', '.'), unsafe_allow_html=True)
 else:
